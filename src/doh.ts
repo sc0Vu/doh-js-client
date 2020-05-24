@@ -37,7 +37,7 @@ DoH.prototype.setProvider = function (provider :string) {
 // Seems cleanbrowsing doesn't support caa query
 DoH.prototype.getDomainType = function (domainType: string) {
   let type: number = 0
-  switch (domainType) {
+  switch (domainType.toUpperCase()) {
     case 'A':
       type = 1
       break
