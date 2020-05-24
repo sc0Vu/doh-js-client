@@ -5,8 +5,6 @@ declare const module
 const XHR2 = require('xhr2')
 const Packet = require('native-dns-packet')
 
-// TODO:
-// fix: cannot use native dns message in cloudflare
 function DoH (provider: string) {
   Object.defineProperties(this, {
     providers: {
@@ -36,18 +34,48 @@ DoH.prototype.setProvider = function (provider :string) {
   this.uri = this.providers[this.provider]
 }
 
-// TODO: support other domain type, eg MX
+// Seems cleanbrowsing doesn't support caa query
 DoH.prototype.getDomainType = function (domainType: string) {
   let type: number = 0
   switch (domainType) {
+    case 'A':
+      type = 1
+      break
     case 'AAAA':
       type = 28
+      break
+    case 'CAA':
+      type = 257
       break
     case 'CNAME':
       type = 5
       break
+    case 'DS':
+      type = 43
+      break
+    case 'DNSKEY':
+      type = 48
+      break
+    case 'MX':
+      type = 15
+      break
     case 'NS':
       type = 2
+      break
+    case 'NSEC':
+      type = 47
+      break
+    case 'NSEC3':
+      type = 50
+      break
+    case 'RRSIG':
+      type = 46
+      break
+    case 'SOA':
+      type = 6
+      break
+    case 'TXT':
+      type = 16
       break
     default:
       // A
@@ -68,6 +96,7 @@ DoH.prototype.resolve = function (domainName: string, domainType: string) {
   })
   Packet.write(dnsBuf, dnsPacket)
 
+  let provider = this.provider
   let query = `${this.uri}?dns=${dnsBuf.toString('base64').replace(/=+/, '')}`
   return new Promise(function (resolve, reject) {
     let xhr = new XHR2()
@@ -85,7 +114,7 @@ DoH.prototype.resolve = function (domainName: string, domainType: string) {
           reject(err)
         }
       } else {
-        reject(new Error(`Cannot found the domain, xhr status: ${xhr.status}.`))
+        reject(new Error(`Cannot found the domain, provider: ${provider}, xhr status: ${xhr.status}.`))
       }
     }
     xhr.onerror = function (err) {
