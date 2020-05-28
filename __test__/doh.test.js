@@ -51,7 +51,7 @@ describe('Test DNS-over-HTTPS client', () => {
     doh.setProvider('cleanbrowsing')
     expect(doh.provider).toBe('cleanbrowsing')
   })
-  test('fetch dns over https through googl, cloudflare and cleanbrowsing', async (done) => {
+  test('fetch dns over https through google', async (done) => {
     let totalTests = tests.length
     let isOk = true
     for (let i=0; i<totalTests; i++) {
@@ -85,5 +85,5 @@ describe('Test DNS-over-HTTPS client', () => {
     if (isOk === true) {
       done()
     }
-  })
+  }, 100000)
 })

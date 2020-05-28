@@ -85,10 +85,20 @@ DoH.prototype.getDomainType = function (domainType: string) {
   return type
 }
 
+DoH.prototype.newBuffer = function (length: number) {
+  let buf
+  if (Buffer.alloc) {
+    buf = Buffer.alloc(length)
+  } else {
+    buf = new Buffer(length)
+  }
+  return buf
+}
+
 DoH.prototype.resolve = function (domainName: string, domainType: string) {
   let type = this.getDomainType(domainType)
   let dnsPacket = new Packet()
-  let dnsBuf = new Buffer(128)
+  let dnsBuf = this.newBuffer(128)
   dnsPacket.question.push({
     name: domainName,
     type: type,
