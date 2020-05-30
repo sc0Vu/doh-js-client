@@ -1,7 +1,7 @@
-const DoH = require('../src/index').DoH
+const DoT = require('../src/index').DoT
 
 describe('Test DNS-over-HTTPS client', () => {
-  let doh = new DoH('google')
+  let dot = new DoT('google', './__test__/key.pem', './__test__/certificate.pem')
   let tests = [
     {
       domainName: 'www.google.com',
@@ -46,26 +46,26 @@ describe('Test DNS-over-HTTPS client', () => {
     //   domainType: 'CAA'
     // }
   ]
-  test('initialize doh', () => {
-    expect(doh.provider).toBe('google')
-    doh.setProvider('cleanbrowsing')
-    expect(doh.provider).toBe('cleanbrowsing')
+  test('initialize dot', () => {
+    expect(dot.provider).toBe('google')
+    dot.setProvider('cleanbrowsing')
+    expect(dot.provider).toBe('cleanbrowsing')
   })
-  test('fetch dns over https through google, cloudflare and cleanbrowsing', async (done) => {
+  test('fetch dns over https through google', async (done) => {
     let totalTests = tests.length
     let isOk = true
     for (let i=0; i<totalTests; i++) {
       const dnsTest = tests[i]
-      doh.setProvider('google')
-      expect(doh.provider).toBe('google')
+      dot.setProvider('google')
+      expect(dot.provider).toBe('google')
       try {
-        let gResult = await doh.resolve(dnsTest.domainName, dnsTest.domainType)
-        doh.setProvider('cloudflare')
-        expect(doh.provider).toBe('cloudflare')
-        let cloudResult = await doh.resolve(dnsTest.domainName, dnsTest.domainType)
-        doh.setProvider('cleanbrowsing')
-        expect(doh.provider).toBe('cleanbrowsing')
-        let cleanResult = await doh.resolve(dnsTest.domainName, dnsTest.domainType)
+        let gResult = await dot.resolve(dnsTest.domainName, dnsTest.domainType)
+        dot.setProvider('cloudflare')
+        expect(dot.provider).toBe('cloudflare')
+        let cloudResult = await dot.resolve(dnsTest.domainName, dnsTest.domainType)
+        dot.setProvider('cleanbrowsing')
+        expect(dot.provider).toBe('cleanbrowsing')
+        let cleanResult = await dot.resolve(dnsTest.domainName, dnsTest.domainType)
         expect(gResult.length).toEqual(cloudResult.length)
         expect(gResult.length).toEqual(cleanResult.length)
         for (let i=0; i<gResult.length; i++) {

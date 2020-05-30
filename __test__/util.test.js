@@ -1,4 +1,4 @@
-const Util = require('../src/util')
+const Util = require('../src/index').Util
 
 describe('Test util', () => {
   let tests = [
