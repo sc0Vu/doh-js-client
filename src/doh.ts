@@ -1,9 +1,6 @@
-declare const Buffer
-declare const require
-declare const module
-
-const XHR2 = require('xhr2')
-const Packet = require('native-dns-packet')
+import * as XHR2 from 'xhr2'
+import * as Packet from 'native-dns-packet'
+import * as Util from './util'
 
 function DoH (provider: string) {
   Object.defineProperties(this, {
@@ -34,71 +31,10 @@ DoH.prototype.setProvider = function (provider :string) {
   this.uri = this.providers[this.provider]
 }
 
-// Seems cleanbrowsing doesn't support caa query
-DoH.prototype.getDomainType = function (domainType: string) {
-  let type: number = 0
-  switch (domainType.toUpperCase()) {
-    case 'A':
-      type = 1
-      break
-    case 'AAAA':
-      type = 28
-      break
-    case 'CAA':
-      type = 257
-      break
-    case 'CNAME':
-      type = 5
-      break
-    case 'DS':
-      type = 43
-      break
-    case 'DNSKEY':
-      type = 48
-      break
-    case 'MX':
-      type = 15
-      break
-    case 'NS':
-      type = 2
-      break
-    case 'NSEC':
-      type = 47
-      break
-    case 'NSEC3':
-      type = 50
-      break
-    case 'RRSIG':
-      type = 46
-      break
-    case 'SOA':
-      type = 6
-      break
-    case 'TXT':
-      type = 16
-      break
-    default:
-      // A
-      type = 1
-      break
-  }
-  return type
-}
-
-DoH.prototype.newBuffer = function (length: number) {
-  let buf
-  if (Buffer.alloc) {
-    buf = Buffer.alloc(length)
-  } else {
-    buf = new Buffer(length)
-  }
-  return buf
-}
-
 DoH.prototype.resolve = function (domainName: string, domainType: string) {
-  let type = this.getDomainType(domainType)
+  let type = Util.getDomainType(domainType)
   let dnsPacket = new Packet()
-  let dnsBuf = this.newBuffer(128)
+  let dnsBuf = Util.newBuffer(128)
   dnsPacket.question.push({
     name: domainName,
     type: type,
