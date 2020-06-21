@@ -8,7 +8,8 @@ function DoH (provider: string) {
       value: {
         google: 'https://dns.google/dns-query',
         cloudflare: 'https://cloudflare-dns.com/dns-query',
-        cleanbrowsing: 'https://doh.cleanbrowsing.org/doh/family-filter'
+        cleanbrowsing: 'https://doh.cleanbrowsing.org/doh/family-filter',
+        quad9: 'https://dns9.quad9.net/dns-query'
       },
       writable: false
     }
@@ -20,12 +21,16 @@ function DoH (provider: string) {
   this.uri = this.providers[this.provider]
 }
 
+DoH.prototype.getProviders = function () {
+  return Object.keys(this.providers)
+}
+
 DoH.prototype.setProvider = function (provider :string) {
   if (this.provider === provider) {
     return
   }
   if (typeof this.providers[provider] === 'undefined') {
-    throw new Error('We only support these provider: google, cleanbrowsing, cloudflare')
+    throw new Error('We only support these provider: ' + this.getProviders().join(', '))
   }
   this.provider = provider
   this.uri = this.providers[this.provider]

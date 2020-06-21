@@ -53,7 +53,7 @@ describe('Test DNS-over-HTTPS client', () => {
     expect(doh.provider).toBe('cleanbrowsing')
   })
 
-  test('fetch dns over https through google, cloudflare and cleanbrowsing', async (done) => {
+  test('fetch dns over https through google, cloudflare ,cleanbrowsing and quad9', async (done) => {
     let totalTests = tests.length
     let isOk = true
     for (let i=0; i<totalTests; i++) {
@@ -67,6 +67,9 @@ describe('Test DNS-over-HTTPS client', () => {
         await doh.resolve(dnsTest.domainName, dnsTest.domainType)
         doh.setProvider('cleanbrowsing')
         expect(doh.provider).toBe('cleanbrowsing')
+        await doh.resolve(dnsTest.domainName, dnsTest.domainType)
+        doh.setProvider('quad9')
+        expect(doh.provider).toBe('quad9')
         await doh.resolve(dnsTest.domainName, dnsTest.domainType)
       } catch (err) {
         isOk = false

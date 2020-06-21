@@ -9,7 +9,8 @@ function DoT (provider: string, keyPath: string, certPath: string) {
       value: {
         google: 'dns.google',
         cloudflare: '1.1.1.1',
-        cleanbrowsing: '185.228.169.154'
+        cleanbrowsing: '185.228.169.154',
+        quad9: '9.9.9.9'
       },
       writable: false
     },
@@ -31,12 +32,16 @@ function DoT (provider: string, keyPath: string, certPath: string) {
   this.cert = cert
 }
 
+DoT.prototype.getProviders = function () {
+  return Object.keys(this.providers)
+}
+
 DoT.prototype.setProvider = function (provider :string) {
   if (this.provider === provider) {
     return
   }
   if (typeof this.providers[provider] === 'undefined') {
-    throw new Error('We only support these provider: google, cleanbrowsing, cloudflare')
+    throw new Error('We only support these provider: ' + this.getProviders().join(', '))
   }
   this.provider = provider
   this.uri = this.providers[this.provider]
