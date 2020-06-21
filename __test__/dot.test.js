@@ -80,5 +80,5 @@ describe('Test DNS-over-HTTPS client', () => {
     if (isOk === true) {
       done()
     }
-  }, 100000)
+  }, 120000)
 })
