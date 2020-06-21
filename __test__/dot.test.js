@@ -46,12 +46,14 @@ describe('Test DNS-over-HTTPS client', () => {
     //   domainType: 'CAA'
     // }
   ]
+
   test('initialize dot', () => {
     expect(dot.provider).toBe('google')
     dot.setProvider('cleanbrowsing')
     expect(dot.provider).toBe('cleanbrowsing')
   })
-  test('fetch dns over https through google', async (done) => {
+
+  test('fetch dns over tls through google, cloudflare and cleanbrowsing', async (done) => {
     let totalTests = tests.length
     let isOk = true
     for (let i=0; i<totalTests; i++) {
@@ -59,23 +61,13 @@ describe('Test DNS-over-HTTPS client', () => {
       dot.setProvider('google')
       expect(dot.provider).toBe('google')
       try {
-        let gResult = await dot.resolve(dnsTest.domainName, dnsTest.domainType)
+        await dot.resolve(dnsTest.domainName, dnsTest.domainType)
         dot.setProvider('cloudflare')
         expect(dot.provider).toBe('cloudflare')
-        let cloudResult = await dot.resolve(dnsTest.domainName, dnsTest.domainType)
+        await dot.resolve(dnsTest.domainName, dnsTest.domainType)
         dot.setProvider('cleanbrowsing')
         expect(dot.provider).toBe('cleanbrowsing')
-        let cleanResult = await dot.resolve(dnsTest.domainName, dnsTest.domainType)
-        expect(gResult.length).toEqual(cloudResult.length)
-        expect(gResult.length).toEqual(cleanResult.length)
-        for (let i=0; i<gResult.length; i++) {
-          expect(gResult[i].name).toEqual(cloudResult[i].name)
-          expect(gResult[i].type).toEqual(cloudResult[i].type)
-          expect(gResult[i].class).toEqual(cloudResult[i].class)
-          expect(gResult[i].name).toEqual(cleanResult[i].name)
-          expect(gResult[i].type).toEqual(cleanResult[i].type)
-          expect(gResult[i].class).toEqual(cleanResult[i].class)
-        }
+        await dot.resolve(dnsTest.domainName, dnsTest.domainType)
       } catch (err) {
         isOk = false
         done.fail(err)

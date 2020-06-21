@@ -43,6 +43,7 @@ describe('Test util', () => {
       value: 257
     }
   ]
+
   test('test domain type', () => {
     let totalTests = tests.length
     for (let i=0; i<totalTests; i++) {
