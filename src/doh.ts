@@ -65,7 +65,7 @@ DoH.prototype.resolve = function (domainName: string, domainType: string) {
           reject(err)
         }
       } else {
-        reject(new Error(`Cannot found the domain, provider: ${provider}, xhr status: ${xhr.status}.`))
+        reject(new Error(`Cannot find the domain, provider: ${provider}, xhr status: ${xhr.status}.`))
       }
     }
     xhr.onerror = function (err) {
