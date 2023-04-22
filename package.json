@@ -1,6 +1,6 @@
 {
   "name": "doh-js-client",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "DNS-over-HTTPS/DNS-over-TLS client for nodejs.",
   "main": "dist/index.js",
   "scripts": {
