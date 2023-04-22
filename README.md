@@ -1,5 +1,5 @@
 # doh-js-client
-[![Build Status](https://travis-ci.org/sc0Vu/doh-js-client.svg?branch=master)](https://travis-ci.org/sc0Vu/doh-js-client)
+[![Test and Build](https://github.com/sc0Vu/doh-js-client/actions/workflows/ci.yml/badge.svg)](https://github.com/sc0Vu/doh-js-client/actions/workflows/ci.yml)
 
 DNS-over-HTTPS/DNS-over-TLS client for nodejs, secure your nodejs dns query with modern tls.
 
