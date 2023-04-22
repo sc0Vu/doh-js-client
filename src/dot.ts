@@ -10,7 +10,7 @@ function DoT (provider: string, keyPath: string, certPath: string) {
         google: 'dns.google',
         cloudflare: '1.1.1.1',
         cleanbrowsing: '185.228.169.154',
-        quad9: '9.9.9.9'
+        quad9: 'dns.quad9.net'
       },
       writable: false
     },
